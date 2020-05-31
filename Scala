@@ -1,0 +1,129 @@
+import java.util.*;
+import java.io.*;
+import java.math.*;
+
+//remove if not needed
+
+
+/**
+  * Bring data on patient samples from the diagnosis machine to the laboratory with enough molecules to produce medicine!
+  *
+  */
+class Sample(var sampleId: Int,
+             var carriedBy: Int,
+             var rank: Int,
+             var expertiseGain: String,
+             var health: Int,
+             var cost: Array[Int]) {
+
+  def getId(): Int = sampleId
+
+}
+
+class Robot(var storage: Array[Int], var target: String)
+
+object Player {
+
+  def goConnect(module: String, data: Int, position: String): Unit = {
+    if (position == module) {
+      System.out.print("CONNECT " + data)
+    } else {
+      System.out.print("GOTO " + module)
+    }
+  }
+
+  def goConnect(module: String, data: Char, position: String): Unit = {
+    if (position == module) {
+      System.out.print("CONNECT " + data)
+    } else {
+      System.out.print("GOTO " + module)
+    }
+  }
+
+  def main(args: Array[String]): Unit = {
+    var target: String = ""
+    val in: Scanner = new Scanner(System.in)
+    val projectCount: Int = in.nextInt()
+    for (i <- 0 until projectCount) {
+      val a: Int = in.nextInt()
+      val b: Int = in.nextInt()
+      val c: Int = in.nextInt()
+      val d: Int = in.nextInt()
+      val e: Int = in.nextInt()
+    }
+// game loop
+    while (true) {
+      val samples: ArrayList[Sample] = new ArrayList[Sample]()
+      val robots: ArrayList[Robot] = new ArrayList[Robot]()
+      for (i <- 0.until(2)) {
+        target = in.next()
+        val eta: Int = in.nextInt()
+        val score: Int = in.nextInt()
+        val storageA: Int = in.nextInt()
+        val storageB: Int = in.nextInt()
+        val storageC: Int = in.nextInt()
+        val storageD: Int = in.nextInt()
+        val storageE: Int = in.nextInt()
+        val expertiseA: Int = in.nextInt()
+        val expertiseB: Int = in.nextInt()
+        val expertiseC: Int = in.nextInt()
+        val expertiseD: Int = in.nextInt()
+        val expertiseE: Int = in.nextInt()
+        val storage: Array[Int] =
+          Array(storageA, storageB, storageC, storageD, storageE)
+        robots.add(new Robot(storage, target))
+      }
+      val availableA: Int = in.nextInt()
+      val availableB: Int = in.nextInt()
+      val availableC: Int = in.nextInt()
+      val availableD: Int = in.nextInt()
+      val availableE: Int = in.nextInt()
+      val sampleCount: Int = in.nextInt()
+      for (i <- 0 until sampleCount) {
+        val sampleId: Int = in.nextInt()
+        val carriedBy: Int = in.nextInt()
+        val rank: Int = in.nextInt()
+        val expertiseGain: String = in.next()
+        val health: Int = in.nextInt()
+        val costA: Int = in.nextInt()
+        val costB: Int = in.nextInt()
+        val costC: Int = in.nextInt()
+        val costD: Int = in.nextInt()
+        val costE: Int = in.nextInt()
+        val cost: Array[Int] = Array(costA, costB, costC, costD, costE)
+        val sample: Sample =
+          new Sample(sampleId, carriedBy, rank, expertiseGain, health, cost)
+        samples.add(sample)
+      }
+// To debug: System.err.println("Debug messages...");
+      val abcde: Array[Char] = Array('A', 'B', 'C', 'D', 'E')
+      val me: Robot = robots.get(0)
+      var bestSample: Sample = null
+      var maxHealth: Int = 0
+      for (x <- 0 until samples.size) {
+        val sample: Sample = samples.get(x)
+        if (sample.health > maxHealth) {
+          bestSample = sample
+          maxHealth = sample.health
+        }
+      }
+      if (bestSample.carriedBy != 0) {
+        goConnect("DIAGNOSIS", bestSample.getId, target)
+      } else {
+        var neededM: Char = ' '
+        for (y <- 0.until(5) if me.storage(y) < bestSample.cost(y)) {
+          neededM = abcde(y)
+//break
+        }
+        if (neededM != ' ') {
+          goConnect("MOLECULUS", neededM, me.target)
+        } else {
+          goConnect("LABORATORY", bestSample.getId, me.target)
+        }
+      }
+    }
+// Write an action using System.out.println()
+// Write an action using System.out.println()
+  }
+
+}
